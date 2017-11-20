@@ -13,6 +13,17 @@ services:
       - postgres
     volumes:
       - "./root/gitea/data:/data"
+      - "./root/html:/var/www/html"
+
+  nginx:
+    image: robobeerun/nginx:latest
+    ports:
+      - 8080:8080
+    links:
+      - gitea
+    volumes:
+      - "./root/html:/var/www/html"
+      - "./nginx-in:/nginx-in"
 
   postgres:
     image: "bitnami/postgresql:latest"
