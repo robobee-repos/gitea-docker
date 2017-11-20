@@ -1,0 +1,6 @@
+log.txt
+test/root/**
+test/tmp/**
+tmp/**
+image/rootfs/usr/local/bundle/**
+test/bundle.dist/**

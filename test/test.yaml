@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+
+  gitea:
+    image: robobeerun/gitea:latest
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    environment:
+      DEBUG: "true"
+    links:
+      - postgres
+    volumes:
+      - "./root/gitea/data:/data"
+
+  postgres:
+    image: "bitnami/postgresql:latest"
+    environment:
+      POSTGRESQL_DATABASE: "giteadb"
+      POSTGRESQL_USERNAME: "giteadb"
+      POSTGRESQL_PASSWORD: "giteadb"
+    volumes:
+      - "./root/postgres:/bitnami"
