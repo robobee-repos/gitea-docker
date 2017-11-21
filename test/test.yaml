@@ -10,7 +10,7 @@ services:
     environment:
       DEBUG: "true"
     links:
-      - postgres
+      - "pgpool:postgres"
     volumes:
       - "./root/gitea/data:/data"
       - "./root/html:/var/www/html"
@@ -25,11 +25,66 @@ services:
       - "./root/html:/var/www/html"
       - "./nginx-in:/nginx-in"
 
-  postgres:
-    image: "bitnami/postgresql:latest"
+  pgpool:
+    image: crunchydata/crunchy-pgpool:centos7-9.6.5-1.6.0
+    ports:
+      - "5432"
+    links:
+      - "db-primary:primary"
+      - "db-replica:replica"
     environment:
-      POSTGRESQL_DATABASE: "giteadb"
-      POSTGRESQL_USERNAME: "giteadb"
-      POSTGRESQL_PASSWORD: "giteadb"
+      - PG_PRIMARY_SERVICE_NAME=primary
+      - PG_REPLICA_SERVICE_NAME=replica
+      - PG_USERNAME=giteadb
+      - PG_PASSWORD=giteadb
+      - PG_DATABASE=giteadb
     volumes:
-      - "./root/postgres:/bitnami"
+      - "./startpgpool.sh:/opt/cpm/bin/startpgpool.sh"
+
+  db-primary:
+    image: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
+    ports:
+      - "5432"
+    volumes:
+      - "./root/postgres/primary:/pgdata"
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=101
+      - SHARED_BUFFERS=128MB
+      - MAX_WAL_SENDERS=7
+      - WORK_MEM=5MB
+      - TEMP_BUFFERS=9MB
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_HOST=db-primary
+      - PG_PRIMARY_PASSWORD=password
+      - PG_PRIMARY_PORT=5432
+      - PG_MODE=primary
+      - PG_USER=giteadb
+      - PG_PASSWORD=giteadb
+      - PG_ROOT_PASSWORD=password
+      - PG_DATABASE=giteadb
+
+  db-replica:
+    image: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
+    ports:
+      - "5432"
+    volumes:
+      - "./root/postgres/replica:/pgdata"
+    links:
+      - db-primary
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=101
+      - SHARED_BUFFERS=128MB
+      - MAX_WAL_SENDERS=7
+      - WORK_MEM=5MB
+      - TEMP_BUFFERS=9MB
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_HOST=db-primary
+      - PG_PRIMARY_PORT=5432
+      - PG_PRIMARY_PASSWORD=password
+      - PG_MODE=replica
+      - PG_USER=giteadb
+      - PG_PASSWORD=giteadb
+      - PG_ROOT_PASSWORD=password
+      - PG_DATABASE=giteadb
