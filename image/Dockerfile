@@ -8,16 +8,17 @@ RUN set -x \
     rsync \
     unzip
 
+ENV PIWIK_JAVASCRIPT="" \
+  GITEA_SRC_DIR="/usr/src/gitea"
+
 RUN set -x \
   && cd /tmp \
   && wget -nv -O gitea.zip https://github.com/go-gitea/gitea/archive/v1.3.0-rc1.zip \
   && unzip -q gitea.zip \
-  && ls -l gitea-1.3.0-rc1 \
-  && mkdir -p /var/www/html.dist \
-  && rsync -r gitea-1.3.0-rc1/public/* /var/www/html.dist/ \
+  && mkdir -p /usr/src \
+  && mv gitea-1.3.0-rc1 ${GITEA_SRC_DIR} \
   && rm gitea.zip \
-  && rm -rf gitea-1.3.0-rc1 \
-  && chmod u=rX,g=rX,o=rX /var/www/html.dist
+  && mkdir -p /var/www/html
 
 VOLUME ["/var/www/html"]
 
