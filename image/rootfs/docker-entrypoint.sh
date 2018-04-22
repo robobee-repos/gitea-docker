@@ -23,7 +23,7 @@ source /docker-entrypoint-utils.sh
 set_debug
 echo "Running as `id`"
 
-sync_dir "/usr/src/gitea" "/var/www/html"
+sync_dir "/usr/src/gitea/public" "/var/www/html"
 
 if [[ -d /custom-in ]]; then
   mkdir -p /data/gitea
