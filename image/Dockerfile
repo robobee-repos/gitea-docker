@@ -1,4 +1,4 @@
-FROM gitea/gitea:1.3.0-rc1
+FROM gitea/gitea:1.4.0
 
 LABEL maintainer "Erwin Mueller <erwin.mueller@deventm.com>"
 
@@ -13,10 +13,10 @@ ENV PIWIK_JAVASCRIPT="" \
 
 RUN set -x \
   && cd /tmp \
-  && wget -nv -O gitea.zip https://github.com/go-gitea/gitea/archive/v1.3.0-rc1.zip \
+  && wget -nv -O gitea.zip https://github.com/go-gitea/gitea/archive/v1.4.0.zip \
   && unzip -q gitea.zip \
   && mkdir -p /usr/src \
-  && mv gitea-1.3.0-rc1 ${GITEA_SRC_DIR} \
+  && mv gitea-1.4.0 ${GITEA_SRC_DIR} \
   && rm gitea.zip \
   && mkdir -p /var/www/html
 
