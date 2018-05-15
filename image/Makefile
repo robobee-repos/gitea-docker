@@ -1,6 +1,6 @@
 REPOSITORY := robobeerun
 NAME := gitea
-VERSION ?= v1.4.1-r1-1
+VERSION ?= v1.4.1-r1
 
 build: _build ##@targets Builds the docker image.
 
