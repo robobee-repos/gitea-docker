@@ -8,24 +8,34 @@ The image modifies the base image and adds the option to have a input directory 
 
 | Variable | Default | Description |
 | ------------- | ------------- | ----- |
-| PIWIK_JAVASCRIPT  | "" | Piwik tracking code. |
+| `SYNC_ENABLED`  | `true` | Set to `false` to deactivate the application will be done. |
+| `SYNC_TIME_S`  | `300` | Set to the seconds that will be waited before a full update of the application will be done. |
+| `DEBUG`  | `false`  | Set to `true` for additional debug output. |
+| `PIWIK_JAVASCRIPT`  | "" | Piwik tracking code. Will be added to the footer. |
+| `GOOGLE_ANALYTICS_JAVASCRIPT`  | "" | Google Analytics tracking code. Will be added in the header. |
 
 ## Directories
 
 | Path | Description |
 | ------------- | ----- |
-| /data  | Data directory. |
-| /var/www/html  | www-root directory. |
+| `/data`  | Data directory. |
+| `/var/www/html`  | www-root directory. |
 
 ## Input Configration
 
 | Source | Destination |
 | ------------- | ------------- |
-| /custom-in/* | /data/gitea/ |
+| `/custom-in/*` | /data/gitea/ |
+
+## Exposed Ports
+
+| Port | Description |
+| ------------- | ----- |
+| 3000  | http |
 
 ## Test
 
-The docker-compose file `test.yaml` can be used to startup Nginx and the Piwik container. The installation can be then accessed from `localhost:8080`.
+The docker-compose file `test.yaml` can be used to start the container. The installation can be then accessed from `localhost:3000`.
 
 ```
 cd test
