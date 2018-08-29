@@ -9,24 +9,16 @@ services:
       - "2222:22"
     environment:
       DEBUG: "true"
-      PIWIK_JAVASCRIPT: |
-        <!-- Piwik -->
-        <script type="text/javascript">
-          var _paq = _paq || [];
-          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="//piwik.andrea.muellerpublic.de/";
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
-            _paq.push(['setSiteId', '3']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-          })();
+      GOOGLE_ANALYTICS_JAVASCRIPT: |
+        <script async src="https://www.googletagmanager.com/gtag/js?id=xx-xxx-x"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'xx-xxx-x');
         </script>
-        <!-- End Piwik Code -->
     volumes:
-      - "./root/gitea/data:/data"
+      - "./root/gitea:/data"
       - "./root/html:/var/www/html"
 
   nginx:
