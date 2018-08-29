@@ -2,9 +2,6 @@
 set -e
 
 function attach_piwik_js() {
-  if [[ -z "${PIWIK_JAVASCRIPT}" ]]; then
-    return
-  fi
   mkdir -p /data/gitea/templates/base
   cd /data/gitea/templates/base
   file="footer.tmpl"
@@ -19,17 +16,36 @@ EOF
   sed -i "${n}r $tmp" $file
 }
 
+function attach_google_analytics_js() {
+  mkdir -p /data/gitea/templates/custom
+  cd /data/gitea/templates/custom
+  file="body_outer_pre.tmpl"
+  cat << EOF > ${file}
+$GOOGLE_ANALYTICS_JAVASCRIPT
+EOF
+}
+
 source /docker-entrypoint-utils.sh
 set_debug
 echo "Running as `id`"
 
-sync_dir "/usr/src/gitea/public" "/var/www/html"
+if is_sync_enabled && check_update_time ${WEB_ROOT}; then
+  sync_dir "/usr/src/gitea/public" ${WEB_ROOT}
+  update_update_time ${WEB_ROOT}
+fi
 
 if [[ -d /custom-in ]]; then
   mkdir -p /data/gitea
+  sync_dir "/custom-in" "/data/gitea" skip
 fi
-sync_dir "/custom-in" "/data/gitea" skip
 
-attach_piwik_js
+if [[ -n "${PIWIK_JAVASCRIPT}" ]]; then
+  attach_piwik_js
+fi
 
+if [[ -n "${GOOGLE_ANALYTICS_JAVASCRIPT}" ]]; then
+  attach_google_analytics_js
+fi
+
+cd ${WEB_ROOT}
 exec "$@"
