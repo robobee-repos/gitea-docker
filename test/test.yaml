@@ -20,6 +20,7 @@ services:
     volumes:
       - "./root/gitea:/data"
       - "./root/html:/var/www/html"
+      - "./custom-in:/custom-in"
 
   nginx:
     image: robobeerun/nginx:latest
