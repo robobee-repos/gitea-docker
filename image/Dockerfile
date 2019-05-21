@@ -1,4 +1,4 @@
-FROM gitea/gitea:1.5.0
+FROM gitea/gitea:1.8.1
 
 LABEL maintainer "Erwin Mueller <erwin.mueller@deventm.com>"
 
@@ -11,8 +11,8 @@ RUN set -x \
 ENV DEBUG=false \
   WEB_ROOT="/var/www/html" \
   GITEA_SRC_DIR="/usr/src/gitea" \
-  GITEA_VERSION="1.5.0" \
-  GITEA_SHA="d9be2564f6b504c0b9f58bc69d875e8536517c21f9641ff7a17d33e1d31d96e0" \
+  GITEA_VERSION="1.8.1" \
+  GITEA_SHA="50337bacc069a8cb1d1eb78fa42de2f17a995212c7bccac735c3c3bdf57f8551" \
   SYNC_ENABLED="true" \
   SYNC_TIME_S="300" \
   PIWIK_JAVASCRIPT="" \

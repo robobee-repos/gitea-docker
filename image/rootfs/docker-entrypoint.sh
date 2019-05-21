@@ -48,4 +48,4 @@ if [[ -n "${GOOGLE_ANALYTICS_JAVASCRIPT}" ]]; then
 fi
 
 cd ${WEB_ROOT}
-exec "$@"
+/usr/bin/entrypoint "$@"
